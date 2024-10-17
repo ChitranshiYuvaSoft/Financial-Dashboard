@@ -15,18 +15,11 @@ interface UserData {
   password: string;
 }
 
-const page = () => {
+const Page = () => {
   const { isLoading } = useAppSelector((state: RootState) => state.auth);
-
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const [passowrdShow, setPasswordShow] = useState<boolean>(false);
-
-  const handlePasswordShow = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent the button from submitting the form
-    setPasswordShow(!passowrdShow);
-  };
-
+  const [passwordShow, setPasswordShow] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
     email: "",
     password: "",
@@ -34,14 +27,26 @@ const page = () => {
 
   const { email, password } = userData;
 
-  const handleChange = (e: any) => {
+  useEffect(() => {
+    const tokenGet = localStorage.getItem("token");
+    if (!tokenGet || tokenGet === "undefined") {
+      router.push("/login");
+    } else {
+      router.push("/dashboard");
+    }
+  }, [router]);
+
+  const handlePasswordShow = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setPasswordShow((prev) => !prev);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData({
       ...userData,
       [e.target.name]: e.target.value,
     });
   };
-
-  const tokenGet = localStorage.getItem("token");
 
   const handleLoginUser = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,27 +54,19 @@ const page = () => {
     if (email === "user@gmail.com" && password === "123456") {
       dispatch(
         loginUser({
-          email: email,
-          password: password,
-          token: random + random + random + random + random,
+          email,
+          password,
+          token: random.repeat(5),
         })
       );
-      router.push("/data-table");
+      router.push("/dashboard");
     } else {
       toast.error("Login Failure, Check Your Credential's.");
     }
   };
 
-  useEffect(() => {
-    if (!tokenGet || tokenGet === "undefined") {
-      router.push("/login");
-    } else {
-      router.push("/dashboard");
-    }
-  }, [tokenGet]);
-
   return (
-    <div className="w-full h-[100vh] bg-slate-950 flex items-center justify-center  text-white">
+    <div className="w-full h-[100vh] bg-slate-950 flex items-center justify-center text-white">
       <div className="w-80 h-[60%] rounded-2xl bg-slate-900 flex items-center justify-center flex-col">
         <div className="h-[30%] space-y-2 text-center mt-3">
           <h1 className="text-3xl font-bold">Login</h1>
@@ -87,9 +84,8 @@ const page = () => {
         </div>
 
         <form
-          action=""
           className="w-full h-[75%] flex items-center justify-around flex-col"
-          onSubmit={handleLoginUser} // Use onSubmit to trigger login logic
+          onSubmit={handleLoginUser}
         >
           <div className="flex h-[100%] flex-col gap-2 p-8 items-center justify-around">
             <input
@@ -105,7 +101,7 @@ const page = () => {
               <input
                 className="bg-transparent w-[80%] h-[100%] px-4 py-2 transition duration-300 ease-in-out focus:border-transparent focus:outline-none hover:border-black"
                 placeholder="Password"
-                type={passowrdShow ? "text" : "password"} // Toggle password visibility
+                type={passwordShow ? "text" : "password"}
                 name="password"
                 value={password}
                 onChange={handleChange}
@@ -114,7 +110,7 @@ const page = () => {
                 onClick={handlePasswordShow}
                 className="flex items-center justify-center w-[20%]"
               >
-                {!passowrdShow ? (
+                {!passwordShow ? (
                   <IoEyeSharp className="text-xl" />
                 ) : (
                   <FaEyeSlash className="text-xl" />
@@ -128,14 +124,12 @@ const page = () => {
               Login
             </button>
 
-            {isLoading ? (
+            {isLoading && (
               <div className="flex flex-row gap-2">
                 <div className="w-2 h-2 rounded-full bg-white animate-bounce [animation-delay:.7s]"></div>
                 <div className="w-2 h-2 rounded-full bg-white animate-bounce [animation-delay:.3s]"></div>
                 <div className="w-2 h-2 rounded-full bg-white animate-bounce [animation-delay:.7s]"></div>
               </div>
-            ) : (
-              <p></p>
             )}
 
             <h6 className="text-center text-sm font-bold flex align-center justify-around flex-col">
@@ -150,4 +144,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
