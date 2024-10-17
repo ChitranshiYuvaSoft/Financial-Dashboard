@@ -1,8 +1,13 @@
 "use client";
 
+import React from "react";
 import withAuth from "./hoc/withAuth";
 
-const LayoutWrapper = ({ children }: any) => {
+interface LayoutWrapperProps {
+  children: React.ReactNode; 
+}
+
+const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
   return <>{children}</>;
 };
 

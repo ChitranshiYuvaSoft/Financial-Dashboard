@@ -12,10 +12,10 @@ interface RegisterUser {
   password: string;
 }
 
-interface VerifyData {
-  emailVerificationTOken: string;
-  id: string;
-}
+// interface VerifyData {
+//   emailVerificationTOken: string;
+//   id: string;
+// }
 
 interface User {
   email: string;

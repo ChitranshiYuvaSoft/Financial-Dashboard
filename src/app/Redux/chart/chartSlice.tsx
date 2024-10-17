@@ -7,13 +7,18 @@ interface LineChartData {
   month: string;
 }
 
+interface EditChartData {
+  chartData: LineChartData | null;
+  isEdit: boolean;
+}
+
 interface InitialState {
   lineChartData: LineChartData[];
-  pieChartData: Number[];
+  pieChartData: number[];
   isSuccess: boolean;
   isLoading: boolean;
   isError: boolean;
-  editChartData: {};
+  editChartData: EditChartData;
   existingMonth: string;
 }
 
@@ -27,7 +32,7 @@ const initialState: InitialState = {
   isSuccess: false,
   isLoading: false,
   isError: false,
-  editChartData: { chartData: {}, isEdit: false },
+  editChartData: { chartData: null, isEdit: false },
   existingMonth: "",
 };
 
@@ -43,41 +48,21 @@ const chartSlice = createSlice({
       if (find) {
         find.sales = action.payload.sales;
         find.purchase = action.payload.purchase;
-        // return {
-        //   ...state,
-        // };
       } else {
-        // state.lineChartData.push(action.payload);
-        return {
-          ...state,
-          lineChartData: [...state.lineChartData, action.payload],
-        };
+        state.lineChartData.push(action.payload);
       }
-      // return {
-      //   ...state,
-      //   lineChartData: [action.payload, ...state.lineChartData],
-      // };
     },
     removeChartValue: (state, action) => {
       const index = action.payload;
-      const data = [...state.lineChartData];
-      data.splice(index, 1);
-
-      return {
-        ...state,
-        lineChartData: data,
-      };
+      state.lineChartData.splice(index, 1);
     },
     editChartValue: (state, action) => {
-      return {
-        ...state,
-        editChartData: { chartData: action.payload, isEdit: true },
-      };
+      state.editChartData = { chartData: action.payload, isEdit: true };
     },
   },
-  extraReducers: (builder) => {
-    builder;
-  },
+  // extraReducers: (builder) => {
+    // If you have extra reducers to handle async actions, implement them here
+  // },
 });
 
 export const { createChartValue, removeChartValue, editChartValue } =

@@ -11,6 +11,13 @@ import { editChartValue, removeChartValue } from "@/app/Redux/chart/chartSlice";
 import toast from "react-hot-toast";
 import { useState } from "react";
 
+interface LineChartItem {
+  id: string;      
+  sales: string;
+  purchase: string;
+  month: string;
+}
+
 interface PropsFunction {
   togglePopup: () => void;
   isDataTogglePopup: () => void;
@@ -18,12 +25,11 @@ interface PropsFunction {
 
 const ChartData = ({ togglePopup, isDataTogglePopup }: PropsFunction) => {
   const dispatch = useDispatch();
-
   const { lineChartData } = useAppSelector((state: RootState) => state.chart);
 
   const deleteChartData = (index: number) => {
     toast((t) => (
-      <span className="w-[10rem] h-[8rem] bg-white flex itesm-center justify-around flex-col">
+      <span className="w-[10rem] h-[8rem] bg-white flex items-center justify-around flex-col">
         <span className="w-full flex items-center justify-center my-2">
           <RxCrossCircled className="font-bold text-red-800 text-3xl" />
         </span>
@@ -32,7 +38,6 @@ const ChartData = ({ togglePopup, isDataTogglePopup }: PropsFunction) => {
         </p>
 
         <span className="w-full flex items-center justify-center my-2">
-          {" "}
           <button
             onClick={() => {
               dispatch(removeChartValue(index));
@@ -54,28 +59,27 @@ const ChartData = ({ togglePopup, isDataTogglePopup }: PropsFunction) => {
   };
 
   // State
-  const name = "Update Data";
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
-  const handleToggleEditChartOpen = (item: {}) => {
+  const handleToggleEditChartOpen = (item: LineChartItem) => { 
     setIsPopupOpen(!isPopupOpen);
     dispatch(editChartValue(item));
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ">
-      <div className="bg-white p-6  w-[40rem] h-[25rem] shadow-lg overflow-y-scroll">
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+      <div className="bg-white p-6 w-[40rem] h-[25rem] shadow-lg overflow-y-scroll">
         <div className="w-full h-[20%] flex items-center justify-between">
           <h2 className="text-xl font-semibold mb-4">Show Data</h2>
           <span className="w-[40%] h-[100%] flex justify-end mt-6">
             <button
-              className="h-[60%] px-2 py-2 bg-white text-white  mr-2"
+              className="h-[60%] px-2 py-2 bg-white text-white mr-2"
               onClick={togglePopup}
             >
               <MdAddChart className="text-xl font-bold text-green-600" />
             </button>
             <button
-              className="h-[60%] px-2 py-2 bg-white text-white  mr-2"
+              className="h-[60%] px-2 py-2 bg-white text-white mr-2"
               onClick={isDataTogglePopup}
             >
               <RxCross2 className="text-xl font-bold text-red-800" />
@@ -86,50 +90,30 @@ const ChartData = ({ togglePopup, isDataTogglePopup }: PropsFunction) => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-400 uppercase dark:text-gray-400">
             <tr className="w-full h-[4rem]">
-              <th
-                scope="col"
-                className="px-6 py-3 text-slate-800 font-semibold text-center text-sm"
-              >
+              <th scope="col" className="px-6 py-3 text-slate-800 font-semibold text-center text-sm">
                 No.
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-slate-800 font-semibold text-center text-sm"
-              >
+              <th scope="col" className="px-6 py-3 text-slate-800 font-semibold text-center text-sm">
                 Month
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-slate-800 font-semibold text-center text-sm"
-              >
+              <th scope="col" className="px-6 py-3 text-slate-800 font-semibold text-center text-sm">
                 Sales
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-slate-800 font-semibold text-center text-sm"
-              >
+              <th scope="col" className="px-6 py-3 text-slate-800 font-semibold text-center text-sm">
                 Purchase
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-slate-800 font-semibold text-center text-sm"
-              >
+              <th scope="col" className="px-6 py-3 text-slate-800 font-semibold text-center text-sm">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
-            {lineChartData.map((item: any, index: number) => {
+            {lineChartData.map((item: LineChartItem, index: number) => {
               return (
-                <tr
-                  className="border-b border-gray-200 dark:border-gray-700"
-                  key={index}
-                >
+                <tr className="border-b border-gray-200 dark:border-gray-700" key={index}>
                   <td className="px-6 py-4 text-center">{index + 1}</td>
                   <td className="px-6 py-4 text-center">{item.month}</td>
-                  <td className="px-6 py-4 text-gray-600 text-center">
-                    {item.sales}
-                  </td>
+                  <td className="px-6 py-4 text-gray-600 text-center">{item.sales}</td>
                   <td className="px-6 py-4 text-center">{item.purchase}</td>
                   <td className="px-6 py-4 text-center">
                     <button
@@ -154,10 +138,9 @@ const ChartData = ({ togglePopup, isDataTogglePopup }: PropsFunction) => {
 
       {isPopupOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          {/* <div  className="bg-white p-6 rounded-md w-[25rem] h-[25rem] shadow-lg">
-         <h2 className="text-xl font-semibold mb-4">Update Data</h2>
-         
-         </div> */}
+          {/* <div className="bg-white p-6 rounded-md w-[25rem] h-[25rem] shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Update Data</h2>
+          </div> */}
           {/* <Form /> */}
         </div>
       )}

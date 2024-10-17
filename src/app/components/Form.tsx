@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../Redux/hooks";
+import { useAppDispatch } from "../Redux/hooks";
 import { createChartValue } from "../Redux/chart/chartSlice";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 interface SalesInfo {
@@ -20,15 +20,14 @@ interface FormProps {
 }
 
 const Form = ({
-  isPopupOpen,
-  setIsPopupOpen,
+  // Removed unused props
+  // isPopupOpen,
+  // setIsPopupOpen,
   togglePopup,
   name,
 }: FormProps) => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
-
-
+  // const router = useRouter();
   const [salesInfo, setSalesInfo] = useState<SalesInfo>({
     sales: null,
     purchase: null,
@@ -82,20 +81,16 @@ const Form = ({
       month: "",
     });
 
-    toast.success("Successfully Save Data In Chart.");
+    toast.success("Successfully Saved Data In Chart.");
     togglePopup();
-    
   };
-  console.log(salesInfo)
 
   return (
     <div className="bg-white p-6 rounded-md w-[25rem] h-[25rem] shadow-lg">
       <h2 className="text-xl font-semibold mb-4">{name}</h2>
 
       <div>
-        <label className="block mb-2 text-gray-700">
-          Sales 
-        </label>
+        <label className="block mb-2 text-gray-700">Sales</label>
         <input
           type="number"
           className="w-full p-2 border border-gray-300 rounded-md"
@@ -106,9 +101,7 @@ const Form = ({
         />
       </div>
       <div className="mt-4">
-        <label className="block mb-2 text-gray-700">
-          Purchase 
-        </label>
+        <label className="block mb-2 text-gray-700">Purchase</label>
         <input
           type="number"
           className="w-full p-2 border border-gray-300 rounded-md"
@@ -121,14 +114,15 @@ const Form = ({
       <div className="mt-4">
         <label className="block mb-2 text-gray-700">Select Month</label>
         <select
-          id=""
           className="w-full p-2 border border-gray-300 rounded-md"
           name="month"
           onChange={handleChange}
         >
           <option>Select Month</option>
-          {monthData.map((item) => (
-            <option value={item}>{item}</option>
+          {monthData.map((item, index) => (
+            <option key={index} value={item}>
+              {item}
+            </option>
           ))}
         </select>
       </div>

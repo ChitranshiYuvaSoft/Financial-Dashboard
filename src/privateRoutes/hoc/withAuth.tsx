@@ -1,33 +1,28 @@
 "use client";
 
-import { useAppSelector } from "@/app/Redux/hooks";
-import { RootState } from "@/app/Redux/store";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const withAuth = (WrappedComponent: React.ComponentType) => {
-  return (props: any) => {
-
-    // const {token} = useAppSelector(((state:RootState)=> state.auth ))
+const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>) => {
+  const WithAuthComponent: React.FC<P> = (props) => {
     const publicRoutes = ["/login", "/register", `/register/[emailVerification]`];
     const router = useRouter();
     const pathName = usePathname();
     const token = localStorage.getItem("token");
 
     useEffect(() => {
-      if (!token || token=="undefined") {
+      if (!token || token === "undefined") {
         if (!publicRoutes.includes(pathName)) {
           router.push("/login");
         }
       } else {
         if (publicRoutes.includes(pathName)) {
           router.push("/dashboard");
-        
         } else {
           router.push(pathName);
         }
       }
-    }, [token, pathName]);
+    }, [token, pathName, publicRoutes, router]); 
 
     if (!token && !publicRoutes.includes(pathName)) {
       return (
@@ -39,6 +34,10 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
 
     return <WrappedComponent {...props} />;
   };
+
+  WithAuthComponent.displayName = `WithAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+  return WithAuthComponent;
 };
 
 export default withAuth;

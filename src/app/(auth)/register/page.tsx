@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch } from "@/app/Redux/hooks";
+// import { useAppDispatch } from "@/app/Redux/hooks";
 import { RootState } from "@/app/Redux/store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ interface UserData {
 
 const RegisterPage = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const { isSuccess, isLoading, registerUser, message, isError } =
     useSelector((state: RootState) => state.auth);

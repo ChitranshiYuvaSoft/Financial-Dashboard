@@ -1,4 +1,3 @@
-// import { gql } from "@apollo/client";
 import axios from "axios";
 
 interface Data {
@@ -6,34 +5,40 @@ interface Data {
   id: string;
 }
 
-// const LOGIN_USER = gql`
-//   mutation Login($email: String!, $password: String!) {
-//     login(email: $email, password: $password) {
-//       user {
-//         id
-//         name
-//         email
-//       }
-//       token
-//     }
-//   }
-// `;
+// Define a type for userInfo
+interface UserInfo {
+  email: string; // Assuming email is required
+  password: string; // Assuming password is required
+  name?: string; // Optional, for registration
+}
 
-const loginUser = async (userInfo: {}) => {
+// Define the return type for your login and register functions
+interface ApiResponse {
+  data: {
+    user: {
+      id: string;
+      name: string;
+      email: string;
+    };
+    token: string;
+  };
+}
+
+const loginUser = async (userInfo: UserInfo): Promise<ApiResponse> => {
   const response = await axios.post(
     "https://node-js-wse4.onrender.com/user/login",
     userInfo
   );
-  return response.data.data;
+  return response.data; // Adjusted to match the ApiResponse structure
 };
 
-const registerUser = async (userInfo: {}) => {
+const registerUser = async (userInfo: UserInfo): Promise<ApiResponse> => {
   const response = await axios.post(
     "https://node-js-wse4.onrender.com/user",
     userInfo
   );
 
-  return response.data.data;
+  return response.data; // Adjusted to match the ApiResponse structure
 };
 
 const verification = async (data: Data) => {
@@ -44,7 +49,6 @@ const verification = async (data: Data) => {
 };
 
 const authServices = {
-  // LOGIN_USER,
   loginUser,
   registerUser,
   verification,
