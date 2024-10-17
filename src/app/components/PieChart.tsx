@@ -16,8 +16,6 @@ interface LineChartData {
 
 const PieChart = () => {
   const { lineChartData } = useAppSelector((state: RootState) => state.chart);
-  console.log(lineChartData);
-
   const totalSales = lineChartData.reduce(
     (accumulator: number, current: LineChartData) => {
       const salesInNumber = parseInt(current.sales);
@@ -33,7 +31,6 @@ const PieChart = () => {
     0
   );
 
-  console.log(totalSales, totalPurchase);
 
   const chartData = {
     labels: ["Sales", "Purchase"],

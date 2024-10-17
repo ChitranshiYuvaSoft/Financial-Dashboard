@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ReduxProvider from "./redux-provider";
 import LayoutWrapper from "@/privateRoutes/LayoutWrapper";
-import toast, { Toaster } from "react-hot-toast";
+import  { Toaster } from "react-hot-toast";
 import { CopilotKit } from "@copilotkit/react-core"; 
 import "@copilotkit/react-ui/styles.css";
 

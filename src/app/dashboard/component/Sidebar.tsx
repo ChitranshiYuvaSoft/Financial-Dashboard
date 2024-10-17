@@ -1,8 +1,6 @@
 "use client";
 
-import { FaCoins } from "react-icons/fa";
 import Image from "next/image";
-import Link from "next/link";
 import { RootState } from "@/app/Redux/store";
 import { useAppSelector } from "@/app/Redux/hooks";
 
@@ -21,22 +19,11 @@ const Sidebar = () => {
           <Image src={"/user.png"} width={100} height={100} alt="noUser" />
         </div>
         <div className="w-[73%] h-[50%] flex items-start justify-around flex-col pl-1">
-          <h6 className="text-white text-xs">{user.name}</h6>
-          <p className="text-slate-300 text-xs">{user.email}</p>
+          <h6 className="text-white text-xs"></h6>
+          <p className="text-slate-300 text-xs">{user?.email}</p>
         </div>
       </div>
-      <div className="w-full h-[50%] shadow-inner flex items-center justify-start pl-5">
-        <ul className="w-full h-[100%] flex items-start justify-satrt flex-col">
-          <Link href="/dashboard/coins">
-            <li className="text-slate-200 font-semibold text-sm flex items-center justify-around my-4">
-              <span className="mr-5">
-                <FaCoins className="text-xl" />
-              </span>{" "}
-              Coins
-            </li>
-          </Link>
-        </ul>
-      </div>
+      <div className="w-full h-[50%] shadow-inner flex items-center justify-start pl-5"></div>
       <div className="w-full h-[10%] shadow-inner flex items-center justify-between pl-5">
         <ul className="w-full h-[100%] flex items-start justify-around flex-col">
           <button

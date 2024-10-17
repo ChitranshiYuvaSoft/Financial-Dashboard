@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import authServices from "./authService";
+import {  createSlice, PayloadAction } from "@reduxjs/toolkit";
+// import authServices from "./authService";
 
 interface UserData {
   email: string;

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import { createChartValue } from "../Redux/chart/chartSlice";
 import { useRouter } from "next/navigation";
-import { RootState } from "../Redux/store";
 import toast from "react-hot-toast";
 
 interface SalesInfo {
